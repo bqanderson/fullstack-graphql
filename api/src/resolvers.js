@@ -8,8 +8,11 @@ module.exports = {
     user(_, __, { models }) {
       return models.User.findOne()
     },
-    pets(_, __, { models }) {
-      return models.Pet.findMany()
+    pets(_, { input }, { models }) {
+      return models.Pet.findMany(input)
+    },
+    pet(_, { input }, { models }) {
+      return models.Pet.findOne(input)
     },
   },
   // Mutation: {},
