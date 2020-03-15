@@ -16,15 +16,24 @@ const typeDefs = gql`
     type: String!
   }
 
-  input PetInput {
+  input FindPetInput {
     type: String
     name: String
   }
 
+  input CreatePetInput {
+    name: String!
+    type: String!
+  }
+
   type Query {
     user: User!
-    pets(input: PetInput): [Pet]!
-    pet(input: PetInput): Pet!
+    pets(input: FindPetInput): [Pet]!
+    pet(input: FindPetInput): Pet!
+  }
+
+  type Mutation {
+    createPet(input: CreatePetInput!): Pet!
   }
 `
 

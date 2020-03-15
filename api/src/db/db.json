@@ -27,6 +27,12 @@
       "createdAt": "5/1/1985",
       "name": "Diamond",
       "type": "CAT"
+    },
+    {
+      "id": "cFBTtB0gCwHlfMzDsHiyF",
+      "createdAt": 1584295913746,
+      "name": "Samantha",
+      "type": "DOG"
     }
   ]
 }
