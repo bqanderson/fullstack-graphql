@@ -26,6 +26,11 @@ const typeDefs = gql`
     type: String!
   }
 
+  input CreateUserInput {
+    id: ID!
+    username: String!
+  }
+
   type Query {
     user: User!
     pets(input: FindPetInput): [Pet]!

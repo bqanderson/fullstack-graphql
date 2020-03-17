@@ -19,6 +19,9 @@ module.exports = {
     createPet(_, { input }, { models }) {
       return models.Pet.create(input)
     },
+    createUser(_, { input }, { models }) {
+      return models.User.create(input)
+    },
   },
   // Pet: {
   //   img(pet) {
