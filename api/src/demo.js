@@ -2,23 +2,17 @@ const gql = require('graphql-tag')
 const { ApolloServer } = require('apollo-server')
 
 const typeDefs = gql`
-  enum ShoeType {
-    TRAINER
-    CASUAL
-    DRESS
-    BOOT
-  }
-
   type User {
     email: String!
     avatar: String!
-    friends: [User]!
+    shoes: [Shoe]!
   }
 
   interface Shoe {
     type: ShoeType!
     brand: String!
     size: Int!
+    user: User!
   }
 
   type Trainer implements Shoe {
@@ -26,6 +20,7 @@ const typeDefs = gql`
     brand: String!
     size: Int!
     sport: String
+    user: User!
   }
 
   type Casual implements Shoe {
@@ -33,6 +28,7 @@ const typeDefs = gql`
     brand: String!
     size: Int!
     style: String
+    user: User!
   }
 
   type Dress implements Shoe {
@@ -40,6 +36,7 @@ const typeDefs = gql`
     brand: String!
     size: Int!
     occation: String
+    user: User!
   }
 
   type Boot implements Shoe {
@@ -47,6 +44,14 @@ const typeDefs = gql`
     brand: String!
     size: Int!
     eyeholes: Int
+    user: User!
+  }
+
+  enum ShoeType {
+    TRAINER
+    CASUAL
+    DRESS
+    BOOT
   }
 
   input FindShoesInput {
@@ -70,30 +75,41 @@ const typeDefs = gql`
     createShoe(input: CreateShoeInput!): Shoe!
   }
 `
+const user = {
+  id: 1,
+  email: 'yoda@masters.com',
+  avatar: 'http://yoda.png',
+  shoes: [],
+}
+
+const shoes = [
+  { type: 'TRAINER', brand: 'Nike', size: 12, sport: 'Baseball', user: 1 },
+  { type: 'TRAINER', brand: 'Adiddas', size: 14, sport: 'Basketball', user: 1 },
+  { type: 'TRAINER', brand: 'New Balance', size: 9, sport: 'Tennis', user: 1 },
+  { type: 'TRAINER', brand: 'Converse All-Stars', size: 10, sport: 'Basketball', user: 1 },
+  { type: 'BOOT', brand: 'Doc Martins', size: 11, eyeholes: 8, user: 1 },
+  { type: 'CASUAL', brand: 'Dockers', size: 11, style: 'Boatshoe', user: 1 },
+]
 
 const resolvers = {
   Query: {
     shoes(_, { input }) {
-      return [
-        { type: 'TRAINER', brand: 'Nike', size: 12, sport: 'Baseball' },
-        { type: 'TRAINER', brand: 'Adiddas', size: 14, sport: 'Basketball' },
-        { type: 'TRAINER', brand: 'New Balance', size: 9, sport: 'Tennis' },
-        { type: 'TRAINER', brand: 'Converse All-Stars', size: 10, sport: 'Basketball' },
-        { type: 'BOOT', brand: 'Doc Martins', size: 11, eyeholes: 8 },
-        { type: 'CASUAL', brand: 'Dockers', size: 11, style: 'Boatshoe' },
-      ]
+      return shoes
     },
     me() {
-      return {
-        email: 'yoda@masters.com',
-        avatar: 'http://yoda.png',
-        friends: [],
-      }
+      return user
     },
   },
+
   Mutation: {
     createShoe(_, { input }) {
       return input
+    },
+  },
+
+  User: {
+    shoes() {
+      return shoes
     },
   },
 
@@ -107,6 +123,24 @@ const resolvers = {
         default:
           return 'Trainer'
       }
+    },
+  },
+
+  Trainer: {
+    user(shoe) {
+      return user
+    },
+  },
+
+  Casual: {
+    user(shoe) {
+      return user
+    },
+  },
+
+  Boot: {
+    user(shoe) {
+      return user
     },
   },
 }
