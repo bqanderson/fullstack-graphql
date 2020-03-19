@@ -23,10 +23,14 @@ module.exports = {
       return models.User.create(input)
     },
   },
-  // Pet: {
-  //   img(pet) {
-  //     return pet.type === 'DOG' ? 'https://placedog.net/300/300' : 'http://placekitten.com/300/300'
-  //   },
-  // },
-  // User: {},
+  Pet: {
+    owner(_, __, { models }) {
+      return models.User.findOne()
+    },
+  },
+  User: {
+    pets(_, { input }, { models }) {
+      return models.Pet.findMany(input)
+    },
+  },
 }
