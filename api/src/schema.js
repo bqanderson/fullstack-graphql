@@ -27,7 +27,6 @@ const typeDefs = gql`
   }
 
   input CreateUserInput {
-    id: ID!
     username: String!
   }
 
@@ -39,6 +38,7 @@ const typeDefs = gql`
 
   type Mutation {
     createPet(input: CreatePetInput!): Pet!
+    createUser(input: CreateUserInput!): User!
   }
 `
 
